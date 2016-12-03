@@ -140,7 +140,12 @@ class pix2pix(object):
         self.g_sum = tf.merge_summary([self.d__sum,
             self.fake_B_sum, self.d_loss_fake_sum, self.g_loss_sum])
         self.d_sum = tf.merge_summary([self.d_sum, self.d_loss_real_sum, self.d_loss_sum])
-        self.writer = tf.train.SummaryWriter("./logs", self.sess.graph)
+        model_dir = "%s_%s_%s" % (self.dataset_name, self.batch_size, self.output_size)
+        log_dir = os.path.join("./logs/", model_dir) + "/"
+        if not os.path.exists(log_dir):
+            os.makedirs(log_dir)
+
+        self.writer = tf.train.SummaryWriter(log_dir, self.sess.graph)
 
         counter = 1
         start_time = time.time()
